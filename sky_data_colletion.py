@@ -27,7 +27,7 @@ def process_darksky():
     for_nearest_storm = home_forecast.nearestStormDistance
     for_precip_intensity = home_forecast.precipIntensity
     for_precip_probability = home_forecast.precipProbability
-#    for_precip_type = home_forecast.precipType
+#    for_precip_type = home_forecast.precipType - the darkskylib doesn't seem to support this param - submitted issue
     for_temperature = home_forecast.temperature
     for_apparent_temperature = home_forecast.apparentTemperature
     for_dew_point = home_forecast.dewPoint
@@ -35,7 +35,7 @@ def process_darksky():
     for_bar_pressure = home_forecast.pressure
     for_wind_speed = home_forecast.windSpeed
     for_wind_gust = home_forecast.windGust
-    for_windBearking = home_forecast.windBearing
+    for_windBearing = home_forecast.windBearing
     for_cloud_cover = home_forecast.cloudCover
     for_uv_index = home_forecast.uvIndex
     for_visibility = home_forecast.visibility
@@ -43,12 +43,23 @@ def process_darksky():
 
     print ("Ozone {0}".format(for_ozone))
 
-    ''' 
     tm = dt.today()
-    event_time = localTime[11:]
-    conn = sqlite3.connect(config['HVAC']['db_location'])
-    conn.close()
-    '''
+    five_min = tm - datetime.timedelta(minutes=tm.minute % 5,
+                                       seconds=tm.second,
+                                       microseconds=tm.microsecond)
+    event_time = str(tm.hour).rjust(2, '0') + ':' + str(five_min.minute).rjust(2, '0') + ':00'
+    conn = sqlite3.connect(config['DARKSKY']['db_location'])
+    send_data (event_time, home_forecast = home_forecast,
+      for_summary = for_summary, for_nearest_storm = for_nearest_storm,
+      for_precip_intensity = for_precip_intensity,
+      for_precip_probability = for_precip_probability,
+      for_temperature = for_temperature,
+      for_apparent_temperature = for_apparent_temperature,
+      for_dew_point = for_dew_point, for_humidity = for_humidity,
+      for_bar_pressure = for_bar_pressure, for_wind_speed = for_wind_speed,
+      for_wind_gust = for_wind_gust, for_windBearing = for_windBearing,
+      for_cloud_cover = for_cloud_cover, for_uv_index = for_uv_index,
+      for_visibility = for_visibility, for_ozone = for_ozone)
 
 if __name__ == "__main__":
     process_darksky()
