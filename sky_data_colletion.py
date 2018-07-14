@@ -12,6 +12,7 @@ def send_data(conn, event_time, **kwargs):
    cur = conn.cursor()
    statement = 'INSERT INTO darksky (tdate, ttime, param, val) VALUES (date(\'now\',\'localtime\'), ?, ?, ?)'
    for key, value in kwargs.items():
+     print ("Key {0} has value {1}".format(key, value))
      cur.execute(statement, (event_time, key, value))
    conn.commit()
 
@@ -35,12 +36,28 @@ def process_darksky():
     for_bar_pressure = home_forecast.pressure
     for_wind_speed = home_forecast.windSpeed
     for_wind_gust = home_forecast.windGust
-    for_windBearing = home_forecast.windBearing
+    for_wind_bearing = home_forecast.windBearing
     for_cloud_cover = home_forecast.cloudCover
     for_uv_index = home_forecast.uvIndex
     for_visibility = home_forecast.visibility
     for_ozone = home_forecast.ozone
 
+    print ("Temp {0}".format(for_temperature))
+    print ("Summary {0}".format(for_summary))
+    print ("Nearest Storm {0}".format(for_nearest_storm))
+    print ("Precip Intense {0}".format(for_precip_intensity))
+    print ("Precip Prob {0}".format(for_precip_probability))
+
+    print ("Apparent {0}".format(for_apparent_temperature))
+    print ("Jumiodity {0}".format(for_humidity))
+    print ("Bar {0}".format(for_bar_pressure))
+    print ("Wind {0}".format(for_wind_speed))
+    print ("Gusts {0}".format(for_wind_gust))
+
+    print ("Bearing {0}".format(for_wind_gust))
+    print ("Cover{0}".format(for_cloud_cover))
+    print ("UV {0}".format(for_uv_index))
+    print ("Visibility {0}".format(for_visibility))
     print ("Ozone {0}".format(for_ozone))
 
     tm = dt.today()
@@ -49,7 +66,7 @@ def process_darksky():
                                        microseconds=tm.microsecond)
     event_time = str(tm.hour).rjust(2, '0') + ':' + str(five_min.minute).rjust(2, '0') + ':00'
     conn = sqlite3.connect(config['DARKSKY']['db_location'])
-    send_data (conn, event_time, home_forecast = home_forecast,
+    send_data (conn, event_time, 
       for_summary = for_summary, for_nearest_storm = for_nearest_storm,
       for_precip_intensity = for_precip_intensity,
       for_precip_probability = for_precip_probability,
@@ -57,7 +74,7 @@ def process_darksky():
       for_apparent_temperature = for_apparent_temperature,
       for_dew_point = for_dew_point, for_humidity = for_humidity,
       for_bar_pressure = for_bar_pressure, for_wind_speed = for_wind_speed,
-      for_wind_gust = for_wind_gust, for_windBearing = for_windBearing,
+      for_wind_gust = for_wind_gust, for_wind_bearing = for_wind_bearing,
       for_cloud_cover = for_cloud_cover, for_uv_index = for_uv_index,
       for_visibility = for_visibility, for_ozone = for_ozone)
 
