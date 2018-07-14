@@ -19,10 +19,10 @@ def send_data(conn, event_time, **kwargs):
 def process_darksky():
 
     key = config['DARKSKY']['darksky_api_key']
-    lat = config ['OPEN_WEATHERMAP']['own_coord_lat']
-    long = config ['OPEN_WEATHERMAP']['own_coord_long']
+    coord_lat = config ['OPEN_WEATHERMAP']['own_coord_lat']
+    coord_long = config ['OPEN_WEATHERMAP']['own_coord_long']
     
-    home_forecast = forecast(key, lat, long)
+    home_forecast = forecast(key, coord_lat, coord_long)
     for_summary = home_forecast.summary
     for_nearest_storm = home_forecast.nearestStormDistance
     for_precip_intensity = home_forecast.precipIntensity
@@ -49,7 +49,7 @@ def process_darksky():
                                        microseconds=tm.microsecond)
     event_time = str(tm.hour).rjust(2, '0') + ':' + str(five_min.minute).rjust(2, '0') + ':00'
     conn = sqlite3.connect(config['DARKSKY']['db_location'])
-    send_data (event_time, home_forecast = home_forecast,
+    send_data (conn, event_time, home_forecast = home_forecast,
       for_summary = for_summary, for_nearest_storm = for_nearest_storm,
       for_precip_intensity = for_precip_intensity,
       for_precip_probability = for_precip_probability,

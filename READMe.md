@@ -8,9 +8,9 @@ home directory (/home/pi or /root/ in my case).   I maintain these configs
 in a separate repository that is private.  The strucutre in this case is:
 
 [DARKSKY]
-# DarkSky API key - retrieved here:  https://darksky.net/dev/register
+\# DarkSky API key - retrieved here:  https://darksky.net/dev/register
 darksky_api_key = f0617.....00394
-# Location of our sqlite3 DB to store the darksky parameters for my home
+\# Location of our sqlite3 DB to store the darksky parameters for my home
 db_location = /mnt/usb1/darksky/darksky.db
 
 It also relies on the coordinate configuration i supplied to Open Weather Map, so
@@ -24,8 +24,8 @@ Database structure is pretty self explanatory. There's no real need to
 separate the date and time fields; i just do it out of convention.
 
 CREATE TABLE darksky (
-tdateTEXT,
-ttimeTEXT,
-paramTEXT,
-valTEXT
+tdate TEXT,
+ttime TEXT,
+param TEXT,
+val TEXT
 );
