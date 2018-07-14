@@ -12,7 +12,6 @@ def send_data(conn, event_time, **kwargs):
    cur = conn.cursor()
    statement = 'INSERT INTO darksky (tdate, ttime, param, val) VALUES (date(\'now\',\'localtime\'), ?, ?, ?)'
    for key, value in kwargs.items():
-     print ("Key {0} has value {1}".format(key, value))
      cur.execute(statement, (event_time, key, value))
    conn.commit()
 
@@ -41,24 +40,6 @@ def process_darksky():
     for_uv_index = home_forecast.uvIndex
     for_visibility = home_forecast.visibility
     for_ozone = home_forecast.ozone
-
-    print ("Temp {0}".format(for_temperature))
-    print ("Summary {0}".format(for_summary))
-    print ("Nearest Storm {0}".format(for_nearest_storm))
-    print ("Precip Intense {0}".format(for_precip_intensity))
-    print ("Precip Prob {0}".format(for_precip_probability))
-
-    print ("Apparent {0}".format(for_apparent_temperature))
-    print ("Jumiodity {0}".format(for_humidity))
-    print ("Bar {0}".format(for_bar_pressure))
-    print ("Wind {0}".format(for_wind_speed))
-    print ("Gusts {0}".format(for_wind_gust))
-
-    print ("Bearing {0}".format(for_wind_gust))
-    print ("Cover{0}".format(for_cloud_cover))
-    print ("UV {0}".format(for_uv_index))
-    print ("Visibility {0}".format(for_visibility))
-    print ("Ozone {0}".format(for_ozone))
 
     tm = dt.today()
     five_min = tm - datetime.timedelta(minutes=tm.minute % 5,
